@@ -9,8 +9,11 @@ Reworked version of [Trentonom0r3/Ezsynth](https://github.com/Trentonom0r3/Ezsyn
 **Get started:**
 
 1. git clone the repo
-2. Place the `Ezsynth/ezsynth/utils/ebsynth.dll` file
-3. Run script from your Python environment
+2. Install dependencies `pip install -r requirements`
+3. Place the `Ezsynth/ezsynth/utils/ebsynth.dll` file
+4. Run script from your Python environment
+
+You may also install Cupy and Cupyx to use GPU for some other operations.
 
 **Note: This is not intended to be used as an installable module.**
 
@@ -82,7 +85,14 @@ save_to_folder(output_folder, "stylit_err.png", result[1]) # Error image
 
 ### Ezsynth
 
-video stylization. Via file paths: `test_redux.py`
+**edge_method**
+
+Edge detection method. Choose from 'PST', 'Classic', or 'PAGE'.
+* PST (Phase Stretch Transform): Good overall structure, but not very detailed.
+* Classic: A good balance between structure and detail.
+* PAGE (Phase and Gradient Estimation): Great detail, great structure, but slow.
+
+**video stylization**. Via file paths: `test_redux.py`
 
 ```python
 style_paths = [
@@ -101,7 +111,7 @@ ezrunner = Ezsynth(
 )
 
 only_mode = None
-stylized_frames = ezrunner.run_sequences(only_mode)
+stylized_frames, err_frames  = ezrunner.run_sequences(only_mode)
 
 save_seq(stylized_frames, "output")
 ```
@@ -163,9 +173,7 @@ class EzsynthBase:
 * `do_mask (bool)`: Whether to apply mask. Defaults to `False`.
  
 * `pre_mask (bool)`: Whether to mask the inputs and styles before `RUN` or after. Pre-mask takes ~2x time to run per frame. Could be due to Ebsynth.dll implementation. Defaults to `False`.     
- 
-* `return_masked_only (bool)`: Whether to return the styled results without applying it back to the original image. Defaults to `False`.     
- 
+  
 * `feather (int)`: Feather Gaussian radius to apply on the mask results. Only affect if `return_masked_only == False`. Expects integers. Defaults to `0`.
 
 ## Credits
